@@ -1,0 +1,14 @@
+networks:
+  test :
+
+services:
+  caliper:
+    container_name: caliper
+    image: hyperledger/caliper:0.3.0
+    environment: 
+      - CALIPER_BIND_SUT=fabric:1.4.8
+      - CALIPER_BENCH_CONFIG=benchmarks/scenerio/simple/config.yaml
+      - CALIPER_NETWORK_CONFIG=networks/fabric/Ureca/network-config.yaml
+    volumes:
+      - ./caliper-benchmarks:/hyperledger/caliper/workspace
+    network_mode: host

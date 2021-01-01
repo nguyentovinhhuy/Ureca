@@ -1,0 +1,162 @@
+---
+test:
+  name: simple
+  description: This is an example benchmark for caliper, to test the backend DLT's
+    performance with simple account opening & querying transactions
+  workers:
+    type: local
+    number: 1
+  rounds:
+  - label: open
+    description: Test description for the opening of an account through the deployed chaincode
+    txNumber: 100
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 50
+    arguments:
+      txnPerBatch: 20
+      money: 10000
+    callback: benchmarks/scenario/simple/open.js
+  - label: open
+    description: Test description for the opening of an account through the deployed chaincode
+    txNumber: 100
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 100
+    arguments:
+      txnPerBatch: 20
+      money: 10000
+    callback: benchmarks/scenario/simple/open.js
+  - label: open
+    description: Test description for the opening of an account through the deployed chaincode
+    txNumber: 100
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 50
+    arguments:
+      txnPerBatch: 10
+      money: 10000
+    callback: benchmarks/scenario/simple/open.js
+  - label: open
+    description: Test description for the opening of an account through the deployed chaincode
+    txNumber: 100
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 100
+    arguments:
+      txnPerBatch: 10
+      money: 10000
+    callback: benchmarks/scenario/simple/open.js
+  - label: open
+    description: Test description for the opening of an account through the deployed chaincode
+    txNumber: 100
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 50
+    arguments:
+      txnPerBatch: 1
+      money: 10000
+    callback: benchmarks/scenario/simple/open.js
+  - label: open
+    description: Test description for the opening of an account through the deployed chaincode
+    txNumber: 100
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 100
+    arguments:
+      txnPerBatch: 1
+      money: 10000
+    callback: benchmarks/scenario/simple/open.js
+  - label: query
+    description: Test description for the query performance of the deployed chaincode
+    txNumber: 100
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 100
+    callback: benchmarks/scenario/simple/query.js
+  - label: query
+    description: Test description for the query performance of the deployed chaincode
+    txNumber: 100
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 200
+    callback: benchmarks/scenario/simple/query.js
+  - label: query
+    description: Test description for the query performance of the deployed chaincode
+    txNumber: 100
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 300
+    callback: benchmarks/scenario/simple/query.js
+  - label: query
+    description: Test description for the query performance of the deployed chaincode
+    txNumber: 100
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 400
+    callback: benchmarks/scenario/simple/query.js
+  - label: query
+    description: Test description for the query performance of the deployed chaincode
+    txNumber: 100
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 500
+    callback: benchmarks/scenario/simple/query.js
+  - label: query
+    description: Test description for the query performance of the deployed chaincode
+    txNumber: 100
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 600
+    callback: benchmarks/scenario/simple/query.js
+  - label: query
+    description: Test description for the query performance of the deployed chaincode
+    txNumber: 100
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 700
+    callback: benchmarks/scenario/simple/query.js
+  - label: query
+    description: Test description for the query performance of the deployed chaincode
+    txNumber: 100
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 800
+    callback: benchmarks/scenario/simple/query.js
+  - label: query
+    description: Test description for the query performance of the deployed chaincode
+    txNumber: 100
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 900
+    callback: benchmarks/scenario/simple/query.js
+  - label: query
+    description: Test description for the query performance of the deployed chaincode
+    txNumber: 100
+    rateControl:
+      type: fixed-rate
+      opts:
+        tps: 1000
+    callback: benchmarks/scenario/simple/query.js
+monitor:
+  type:
+  - docker
+  docker:
+    containers:
+    - all
+  interval: 1

@@ -1,0 +1,107 @@
+name: Fabric
+version: "1.0"
+mutual-tls: false
+
+caliper:
+  blockchain: fabric
+  #command:
+    #start: export FABRIC_VERSION=1.4.4;export FABRIC_CA_VERSION=1.4.4;docker-compose -f networks/fabric/docker-compose/2org1peercouchdb_solo_raft/docker-compose-tls.yaml up -d;sleep 10s
+    #end: docker-compose -f networks/fabric/docker-compose/2org1peercouchdb_solo_raft/docker-compose-tls.yaml down;(test -z \"$(docker ps -aq)\") || docker rm $(docker ps -aq);(test -z \"$(docker images dev* -q)\") || docker rmi $(docker images dev* -q);rm -rf /tmp/hfc-*
+
+info:
+  Version: 2.0.0
+  Size: 1 Org with 3 Peer
+  Orderer: Solo
+  Distribution: Single Host
+  StateDB: CouchDB
+
+clients:
+  client0.org1.example.com:
+    client:
+      organization: Org1
+      credentialStore:
+        path: /tmp/hfc-kvs/org1
+        cryptoStore:
+          path: /tmp/hfc-cvs/org1
+      clientPrivateKey:
+        path: networks/Ureca/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/keystore/264dde596d231bb1aea749e76a37c7bbb5ef7cb3309d5b95018f64c417c94fd8_sk
+      clientSignedCert:
+        path: networks/Ureca/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/signcerts/User1@org1.example.com-cert.pem
+
+
+channels:
+  mychannel:
+    #configBinary: networks/fabric/config_solo_raft/mychannel.tx
+    created: true
+    orderers:
+    - orderer.example.com
+    peers:
+      peer0.org1.example.com:
+        eventSource: true
+      peer1.org1.example.com:
+        eventSource: true
+      peer2.org1.example.com:
+        eventSource: true
+
+    chaincodes:
+    #- id: sample
+    #  version: v0
+    #  language: golang
+    #  path: fabric/Ureca
+    - id: simple
+      version: v0
+      language: golang
+      path: fabric/scenario/simple/go
+    - id: smallbank
+      version: v0
+      language: golang
+      path: fabric/scenario/smallbank/go
+
+
+organizations:
+  Org1:
+    mspid: Org1MSP
+    peers:
+    - peer0.org1.example.com
+    - peer1.org1.example.com
+    - peer2.org1.example.com
+    certificateAuthorities:
+    - ca.example.com
+    adminPrivateKey:
+      path: networks/Ureca/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/a0e534edd1ed424a1cb74d2037a82950d306ff566cb4583bbb07c62f2c201f34_sk
+    signedCert:
+      path: networks/Ureca/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem
+
+orderers:
+  orderer.example.com:
+    url: grpc://localhost:7050
+    grpcOptions:
+      ssl-target-name-override: orderer.example.com
+  
+peers:
+  peer0.org1.example.com:
+    url: grpc://localhost:7051
+    grpcOptions:
+      ssl-target-name-override: peer0.org1.example.com
+      grpc.keepalive_time_ms: 600000
+  
+  peer1.org1.example.com:
+    url: grpc://localhost:8051
+    grpcOptions:
+      ssl-target-name-override: peer1.org1.example.com
+      grpc.keepalive_time_ms: 600000
+  
+  peer2.org1.example.com:
+    url: grpc://localhost:9051
+    grpcOptions:
+      ssl-target-name-override: peer2.org1.example.com
+      grpc.keepalive_time_ms: 600000
+   
+certificateAuthorities:
+  ca.example.com:
+    url: http://localhost:7054
+    httpOptions:
+      verify: false
+    registrar:
+    - enrollId: admin
+      enrollSecret: adminpw

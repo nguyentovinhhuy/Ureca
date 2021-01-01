@@ -1,0 +1,91 @@
+---
+name: basic-network
+version: "1.0"
+mutual-tls: false
+
+info:
+    Version: 1.4.0
+    Size: 1 Org 3 peers
+    Orderer: Solo
+    Distribution: Single Host
+    StateDB: CouchDB
+
+clients:
+    client0.org1.example.com:
+        client:
+            organization: Org1
+            credentialStore:
+                path: /tmp/hfc-kvs/org1
+                cryptoStore:
+                    path: /tmp/hfc-cvs/org1
+            clientPrivateKey:
+                path: /home/keplerelipse/Desktop/fabric-samples/Ureca-Project/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/keystore/264dde596d231bb1aea749e76a37c7bbb5ef7cb3309d5b95018f64c417c94fd8_sk
+            clientSignedCert:
+                path: /home/keplerelipse/Desktop/fabric-samples/Ureca-Project/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/signcerts/User1@org1.example.com-cert.pem
+            connection:
+                timeout:
+                    peer:
+                        endorser: '3000'
+                    orderer: '3000'
+
+caliper:
+  blockchain: fabric
+  command:
+    start: export FABRIC_VERSION=1.4.0;export FABRIC_CA_VERSION=1.4.0;docker-compose -f /home/keplerelipse/Desktop/fabric-samples/Ureca-Project/docker-compose.yml up -d;sleep 3s
+    end: docker-compose -f /home/keplerelipse/Desktop/fabric-samples/Ureca-Project/docker-compose.yml down;(test -z \"$(docker ps -aq)\") || docker rm $(docker ps -aq);(test -z \"$(docker images dev* -q)\") || docker rmi $(docker images dev* -q);rm -rf /tmp/hfc-*
+
+channels:
+    mychannel:
+        configBinary: /home/keplerelipse/Desktop/fabric-samples/Ureca-Project/config/channel.tx
+        #configBinary: /etc/hyperledger/configtx/channel.tx
+        #created: false
+        orderers:
+        - orderer.example.com
+        peers:
+            peer0.org1.example.com: {}
+            peer1.org1.example.com: {}
+            peer2.org1.example.com: {}
+        chaincodes:
+        -   id: smallbank
+            version: v0
+            language: golang
+            path: fabric/scenario/smallbank/go
+            
+
+organizations:
+    Org1:
+        mspid: Org1MSP
+        peers:
+        - peer0.org1.example.com
+        - peer1.org1.example.com
+        - peer2.org1.example.com
+        certificateAuthorities:
+        - ca.example.com
+        adminPrivateKey:
+            path: /home/keplerelipse/Desktop/fabric-samples/Ureca-Project/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/a0e534edd1ed424a1cb74d2037a82950d306ff566cb4583bbb07c62f2c201f34_sk
+        signedCert:
+            path: /home/keplerelipse/Desktop/fabric-samples/Ureca-Project/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem
+
+orderers:
+    orderer.example.com:
+        url: grpc://localhost:7050
+        grpcOptions:
+            ssl-target-name-override: orderer.example.com
+
+peers:
+    peer0.org1.example.com:
+        url: grpc://localhost:7051
+    peer1.org1.example.com:
+        url: grpc://localhost:8051
+    peer2.org1.example.com:
+        url: grpc://localhost:9051
+
+certificateAuthorities:
+    ca.example.com:
+        url: http://localhost:7054
+        caName: ca.example.com
+        httpOptions:
+            verify: false
+        registrar:
+        - enrollId: admin
+          enrollSecret: adminpw
