@@ -69,6 +69,6 @@ require (
 	honnef.co/go/tools v0.0.0-20190319011948-d116c56a00f3 // indirect
 )
 
-replace github.com/golang/lint => golang.org/x/lint v0.0.0-20190313153728-d0100b6bd8b3
+//replace github.com/golang/lint => golang.org/x/lint v0.0.0-20190313153728-d0100b6bd8b3
 
 replace github.com/davecgh/go-spew => github.com/yoondo/go-spew v1.1.1-0.20180221232628-8991bc29aa16

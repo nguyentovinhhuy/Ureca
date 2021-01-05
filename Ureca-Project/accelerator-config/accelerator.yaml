@@ -5,17 +5,17 @@ userName: "Admin"
 organization: "Org1"
 batch:
   - type: "execute"
-    channelId: "accelerator"
-    chaincodeName: "ping"
-    fcn: "ping"
+    channelId: "mychannel"
+    chaincodeName: "sample"
+    fcn: "set"
     queueSize: 1000
     maxWaitTimeSeconds: 5
     maxBatchItems: 10
     recovery: true
   - type: "query"
-    channelId: "accelerator"
-    chaincodeName: "ping"
-    fcn: "pong"
+    channelId: "mychannel"
+    chaincodeName: "sample"
+    fcn: "get"
     queueSize: 1000
     maxWaitTimeSeconds: 5
     maxBatchItems: 10
